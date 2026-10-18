@@ -1,9 +1,3 @@
-/*
-=========================================================
-ARCHIVO: app.js
-=========================================================
-*/
-
 import express from "express";
 import cors from "cors";
 
@@ -22,19 +16,15 @@ const app = express();
    MIDDLEWARES GLOBALES
 ===================================================== */
 
-/*
-Configuración de CORS para aceptar peticiones tanto locales
-como de tu frontend desplegado en producción (Vercel).
-*/
 const allowedOrigins = [
   "http://localhost:5173",
-  process.env.FRONTEND_URL // Ej: https://mi-frontend.vercel.app
+  "https://inventario-fronweb.vercel.app",
+  process.env.FRONTEND_URL
 ].filter(Boolean);
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Permite peticiones sin origin (como Postman o Server-to-Server)
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
