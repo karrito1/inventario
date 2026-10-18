@@ -16,6 +16,10 @@ const app = express();
    MIDDLEWARES GLOBALES
 ===================================================== */
 
+/* =====================================================
+   MIDDLEWARES GLOBALES
+===================================================== */
+
 const allowedOrigins = [
   "http://localhost:5173",
   "https://inventario-fronweb.vercel.app",
@@ -25,7 +29,13 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
+      // Permite peticiones sin origin (como Postman o Server-to-Server)
+      if (!origin) return callback(null, true);
+
+      // Permite el dominio principal, el de producción o CUALQUIER subdominio de vercel.app de tu proyecto
+      const isAllowed = allowedOrigins.includes(origin) || origin.endsWith(".vercel.app");
+
+      if (isAllowed) {
         callback(null, true);
       } else {
         callback(new Error("Acceso no permitido por política de CORS"));
